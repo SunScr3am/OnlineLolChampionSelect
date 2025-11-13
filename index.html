@@ -7,65 +7,67 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
-<div id="main-container">
-  <!-- Player 1 Panel -->
-  <div id="player1-panel" class="player-panel">
-    <div id="player1-bans" class="ban-container">
-      <div class="ban-slot"></div>
-      <div class="ban-slot"></div>
-      <div class="ban-slot"></div>
-    </div>
-    <div id="player1-champ-name" class="champ-name">Player1</div>
-    <div id="player1-champ-img" class="champ-img"></div>
-  </div>
-
-  <!-- Center Area -->
-  <div id="center-area">
-    <!-- Score + Timer -->
-    <div id="top-bar">
-      <div id="score">0 - 0</div>
-      <div id="timer-container">
+  <!-- TOP PANEL: Nomi giocatori e score -->
+  <div class="top-panel">
+    <div id="player1-name" class="player-name">Player 1</div>
+    <div class="score-container">
+      <div id="score" class="score">0 - 0</div>
+      <div class="timer-container">
+        <canvas id="timer-canvas" width="60" height="60"></canvas>
         <div id="timer-text">30</div>
-        <canvas id="timer-canvas" width="50" height="50"></canvas>
       </div>
     </div>
-
-    <!-- Filters -->
-    <div id="filters-container">
-      <input type="text" id="champ-search" placeholder="Cerca...">
-      <select id="role-filter">
-        <option value="">Tutti</option>
-        <option value="Top">Top</option>
-        <option value="Jungle">Jungle</option>
-        <option value="Mid">Mid</option>
-        <option value="ADC">ADC</option>
-        <option value="Support">Support</option>
-      </select>
-    </div>
-
-    <!-- Champion Grid -->
-    <div id="champion-grid-container">
-      <div id="champion-grid"></div>
-    </div>
-
-    <!-- Buttons -->
-    <button id="lockin-btn">Lock-in</button>
-    <button id="ban-mode-btn">Attiva Ban</button>
+    <div id="player2-name" class="player-name">Player 2</div>
   </div>
 
-  <!-- Player 2 Panel -->
-  <div id="player2-panel" class="player-panel">
-    <div id="player2-bans" class="ban-container">
-      <div class="ban-slot"></div>
-      <div class="ban-slot"></div>
-      <div class="ban-slot"></div>
-    </div>
-    <div id="player2-champ-name" class="champ-name">Player2</div>
-    <div id="player2-champ-img" class="champ-img"></div>
-  </div>
-</div>
+  <div class="main-container">
+    <div class="game-area">
+      <!-- PLAYER 1 PANEL -->
+      <div id="player1-panel" class="side-panel">
+        <div class="ban-container" id="player1-bans">
+          <div class="ban-slot"></div>
+          <div class="ban-slot"></div>
+          <div class="ban-slot"></div>
+        </div>
+        <div class="player-panel">
+          <div class="player-champ-container" id="player1-champ-img"></div>
+          <div id="player1-champ-name" class="player-champ-name"></div>
+        </div>
+      </div>
 
-<script src="assets/js/championSelect.js"></script>
+      <!-- CHAMPION GRID -->
+      <div id="champion-grid-container">
+        <div id="filters-container">
+          <input type="text" id="champ-search" placeholder="Cerca champion">
+          <select id="role-filter">
+            <option value="">Tutti</option>
+            <option value="Top">Top</option>
+            <option value="Jungle">Jungle</option>
+            <option value="Mid">Mid</option>
+            <option value="ADC">ADC</option>
+            <option value="Support">Support</option>
+          </select>
+          <button id="ban-mode-btn">Attiva Ban</button>
+        </div>
+        <div id="champion-grid"></div>
+        <button id="lockin-btn">Lock-in</button>
+      </div>
+
+      <!-- PLAYER 2 PANEL -->
+      <div id="player2-panel" class="side-panel">
+        <div class="ban-container" id="player2-bans">
+          <div class="ban-slot"></div>
+          <div class="ban-slot"></div>
+          <div class="ban-slot"></div>
+        </div>
+        <div class="player-panel">
+          <div class="player-champ-container" id="player2-champ-img"></div>
+          <div id="player2-champ-name" class="player-champ-name"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/championSelect.js"></script>
 </body>
 </html>

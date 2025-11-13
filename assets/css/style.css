@@ -1,237 +1,271 @@
-/* RESET BASE */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Arial', sans-serif;
-}
-
 body {
-  background-color: #0f0f12;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1e1e1e;
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 10px;
 }
 
-/* MAIN LAYOUT */
-#main-container {
+.top-panel {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
-  max-width: 1200px;
+  align-items: center;
+  padding: 10px 50px;
 }
 
-/* PLAYER PANEL */
-.player-panel {
-  background: linear-gradient(135deg, #1f1f22, #2c2c33);
-  border: 2px solid #444;
-  border-radius: 10px;
-  padding: 10px;
-  width: 200px;
+.player-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.score-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  transition: border 0.3s, box-shadow 0.3s;
 }
 
-.player-panel.active {
-  border-color: #00f;
-  box-shadow: 0 0 20px #00f;
-}
-
-.champ-name {
-  margin-bottom: 5px;
+.score {
+  font-size: 28px;
   font-weight: bold;
-  text-align: center;
 }
 
-.champ-img {
-  width: 150px;
-  height: 250px;
-  background-color: #000;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid #333;
-}
-
-/* BAN SLOTS */
-.ban-container {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 10px;
-}
-
-.ban-slot {
-  width: 40px;
-  height: 40px;
-  background-color: #111;
-  border: 1px solid #333;
+.timer-container {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-/* CENTER AREA */
-#center-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex-grow: 1;
-  margin: 0 20px;
-}
-
-/* SCORE + TIMER */
-#top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-#score {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-#timer-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#timer-text {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-  font-weight: bold;
+  width: 60px;
+  height: 60px;
 }
 
 #timer-canvas {
-  width: 50px;
-  height: 50px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-/* GRIGLIA CHAMPION */
-#champion-grid-container {
-  width: 700px;
-  max-height: 400px;
-  overflow-y: auto;
+#timer-text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* GAME AREA */
+.main-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  position: relative;
+}
+
+.game-area {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1400px;
+  position: relative;
+}
+
+/* SIDE PANELS */
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 330px;
+  position: absolute;
+}
+
+#player1-panel {
+  top: 10px;
+  left: -150px;
+}
+
+#player2-panel {
+  top: 10px;
+  right: -150px;
+}
+
+.player-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-champ-container {
+  width: 300px;
+  height: 570px;
+  background-color: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+  position: relative;
+}
+
+.player-champ-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Glow differenziato per squadra */
+#player1-panel .player-champ-container img.active {
+  box-shadow: 0 0 20px 5px #1e90ff;
+}
+
+#player2-panel .player-champ-container img.active {
+  box-shadow: 0 0 20px 5px #ff4c4c;
+}
+
+/* CHAMPION GRID */
+#champion-grid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 700px;
+}
+
+#filters-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
   justify-content: center;
 }
 
 #champion-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 10px;
   justify-content: center;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #222;
+  border-radius: 10px;
+}
+
+#champion-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+#champion-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#champion-grid::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+#champion-grid::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .champion-icon {
-  width: 64px;
-  height: 64px;
+  width: 100px;
+  height: 100px;
   cursor: pointer;
-  border-radius: 6px;
-  flex-shrink: 0;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #111;
-  transition: transform 0.2s, filter 0.3s, box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s;
 }
 
 .champion-icon:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 8px #fff;
+  box-shadow: 0 0 20px #fff;
 }
 
-.champion-icon-img {
+.champion-icon img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+.champion-icon.locked {
+  animation: lockPulse 0.5s ease;
+}
+
+@keyframes lockPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* BANS */
+.ban-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.ban-slot {
+  width: 80px;
+  height: 80px;
+  margin: 0 4px;
+  background-color: #111;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ban-slot img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: brightness(30%) grayscale(100%);
 }
 
-/* SEARCH + FILTER */
-#filters-container {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  justify-content: center;
-}
-
-#champ-search, #role-filter {
-  padding: 5px 10px;
-  border-radius: 4px;
-  border: 1px solid #555;
-}
-
-/* LOCK-IN & BAN BUTTONS */
-#lockin-btn, #ban-mode-btn {
-  margin-top: 20px;
-  padding: 8px 15px;
+/* BUTTONS */
+button {
+  padding: 8px 16px;
+  margin: 10px;
+  border-radius: 5px;
   border: none;
-  border-radius: 6px;
-  background-color: #444;
-  color: #fff;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s;
 }
 
-#lockin-btn:hover, #ban-mode-btn:hover {
-  background-color: #666;
+#lockin-btn {
+  background-color: #0a84ff;
+  color: #fff;
 }
 
-/* SCROLLBAR */
-#champion-grid-container::-webkit-scrollbar {
-  width: 8px;
+#ban-mode-btn {
+  background-color: #ff4c4c;
+  color: #fff;
 }
 
-#champion-grid-container::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 4px;
+/* COLORI GLOW */
+#player1-panel {
+  --glow-color: #3b82f6; /* blu */
 }
 
-#champion-grid-container::-webkit-scrollbar-track {
-  background: #222;
+#player2-panel {
+  --glow-color: #ef4444; /* rosso */
 }
 
-/* GLOW HOVER SUI CHAMPION */
-.champion-icon:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 12px #00f, 0 0 24px #00f33d;
+/* GLOW SOLO QUANDO IL PLAYER È ATTIVO */
+.player-panel.active .player-champ-container img {
+  box-shadow: 0 0 25px 8px var(--glow-color);
 }
 
-/* LOCKED IN ANIMATION */
-.champion-icon.locked {
-  animation: lockGlow 1s forwards;
-  border: 2px solid #00f;
-}
 
-@keyframes lockGlow {
-  0% { box-shadow: 0 0 0 #00f; }
-  50% { box-shadow: 0 0 12px #00f, 0 0 24px #00f33d; }
-  100% { box-shadow: 0 0 6px #00f, 0 0 12px #00f33d; }
-}
+/* pulito: definizione colori (non toccano layout) */
+#player1-panel { --glow-color: #3b82f6; } /* blu */
+#player2-panel { --glow-color: #ef4444; } /* rosso */
 
-/* LOADING SCREEN FADE IN */
-.champ-img img {
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-}
-
-.champ-img img.visible {
-  opacity: 1;
+/* Applica il box-shadow al container quando il pannello è attivo.
+   Non tocca dimensioni/posizionamento. */
+#player1-panel.active .player-champ-container,
+#player2-panel.active .player-champ-container {
+  box-shadow: 0 0 30px 12px var(--glow-color);
+  transition: box-shadow 0.25s ease-in-out;
 }

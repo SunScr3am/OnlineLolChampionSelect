@@ -1,5 +1,6 @@
 let champions = [];
 let championRoles = {};
+
 fetch("assets/js/championsWithRoles.json")
   .then(res => res.json())
   .then(data => {
@@ -13,7 +14,6 @@ let selectedPlayer = "player1";
 let banMode = false;
 let bans = { player1: [], player2: [] };
 
-// ==================== GESTIONE LOCAL/REMOTE ICON & LOADING ====================
 const localChampionMap = {
   "ChoGath": "assets/img/champions/ChoGath.png",
   "KhaZix": "assets/img/champions/KhaZix.png",
@@ -28,15 +28,16 @@ function cleanChampionName(name) {
 
 function getImageName(champ) {
   const cleanName = cleanChampionName(champ);
-  return cleanName
-    .replace("Nunu&Willump","Nunu")
-    .replace("Wukong","MonkeyKing")
-    .replace("RenataGlasc","RenataGlasc")
-    .replace("KaiSa","KaiSa")
-    .replace("ChoGath","ChoGath")
-    .replace("LeBlanc","LeBlanc")
-    .replace("KhaZix","KhaZix")
-    || cleanName;
+  const map = {
+    "Nunu&Willump": "Nunu",
+    "Wukong": "MonkeyKing",
+    "RenataGlasc": "RenataGlasc",
+    "KaiSa": "KaiSa",
+    "ChoGath": "ChoGath",
+    "LeBlanc": "LeBlanc",
+    "KhaZix": "KhaZix"
+  };
+  return map[cleanName] || cleanName;
 }
 
 function getIconSrc(champ) {
@@ -51,7 +52,6 @@ function getLoadingSrc(champ) {
   }
 }
 
-// ==================== GESTIONE CHAMPION GRID ====================
 document.getElementById("ban-mode-btn").addEventListener("click", () => {
   banMode = !banMode;
   document.getElementById("ban-mode-btn").textContent = banMode ? "Modalità Ban Attiva" : "Attiva Ban";
@@ -91,17 +91,14 @@ function selectChampion(champ) {
   const champImgEl = document.getElementById(`${selectedPlayer}-champ-img`);
   champNameEl.textContent = champ;
 
-  champImgEl.innerHTML = ""; 
+  // Rimuovi precedente e aggiungi nuova immagine
+  champImgEl.innerHTML = "";
   const img = document.createElement("img");
   img.src = getLoadingSrc(champ);
   img.alt = champ;
-  img.style.width = "100%";
-  img.style.height = "100%";
-  img.style.objectFit = "cover";
-  img.onload = () => img.classList.add("visible"); // fade-in
   champImgEl.appendChild(img);
 
-  // LOCK-IN VISUAL
+  // Lock-in visual sulla griglia
   const gridIcons = Array.from(championGrid.children);
   gridIcons.forEach(div => {
     if (div.title === champ) {
@@ -136,14 +133,9 @@ function updateBanUI(player) {
       const img = document.createElement("img");
       img.src = getIconSrc(champ);
       img.alt = champ;
-      img.style.width = "100%";
-      img.style.height = "100%";
-      img.style.objectFit = "contain";
       slot.appendChild(img);
 
-      slot.style.filter = "brightness(30%) grayscale(100%)";
-      slot.style.position = "relative";
-
+      // Overlay diagonale
       const line = document.createElement("div");
       line.style.position = "absolute";
       line.style.top = "0";
@@ -153,6 +145,8 @@ function updateBanUI(player) {
       line.style.background = "linear-gradient(135deg, rgba(255,0,0,0.8) 2px, transparent 2px)";
       line.style.pointerEvents = "none";
       slot.appendChild(line);
+
+      slot.style.filter = "brightness(30%) grayscale(100%)";
     } else {
       slot.innerHTML = "";
       slot.style.filter = "none";
@@ -174,9 +168,20 @@ function updateChampionGridState() {
 }
 
 function updateActivePlayerUI() {
-  document.getElementById("player1-panel").classList.toggle("active", selectedPlayer === "player1");
-  document.getElementById("player2-panel").classList.toggle("active", selectedPlayer === "player2");
+    const p1Panel = document.getElementById("player1-panel");
+    const p2Panel = document.getElementById("player2-panel");
+
+    if (!p1Panel || !p2Panel) return;
+
+    if (selectedPlayer === "player1") {
+        p1Panel.classList.add("active");
+        p2Panel.classList.remove("active");
+    } else {
+        p2Panel.classList.add("active");
+        p1Panel.classList.remove("active");
+    }
 }
+
 
 function applyFilters() {
   const searchValue = document.getElementById("champ-search").value.toLowerCase();
@@ -184,9 +189,10 @@ function applyFilters() {
 
   Array.from(championGrid.children).forEach(div => {
     const champName = div.title;
-    const role = championRoles[champName] || "";
+    const rolesRaw = championRoles[champName] || "";
+    const roles = rolesRaw.split("-");
     const matchesSearch = champName.toLowerCase().includes(searchValue);
-    const matchesRole = !roleValue || role === roleValue;
+    const matchesRole = !roleValue || roles.includes(roleValue);
     div.style.display = matchesSearch && matchesRole ? "flex" : "none";
   });
 }
@@ -194,10 +200,9 @@ function applyFilters() {
 document.getElementById("champ-search").addEventListener("input", applyFilters);
 document.getElementById("role-filter").addEventListener("change", applyFilters);
 
-// ======================= TIMER ANIMATO =======================
-let totalTime = 30; 
+// TIMER
+let totalTime = 30;
 let startTime = null;
-
 const timerText = document.getElementById("timer-text");
 const canvas = document.getElementById("timer-canvas");
 const ctx = canvas.getContext("2d");
@@ -205,7 +210,6 @@ const radius = canvas.width / 2 - 6;
 
 function drawTimer(progress) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   ctx.beginPath();
   ctx.arc(canvas.width/2, canvas.height/2, radius, 0, 2 * Math.PI);
   ctx.strokeStyle = "#333";
@@ -213,25 +217,17 @@ function drawTimer(progress) {
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(
-    canvas.width/2,
-    canvas.height/2,
-    radius,
-    -Math.PI/2,
-    -Math.PI/2 + 2 * Math.PI * progress
-  );
-
+  ctx.arc(canvas.width/2, canvas.height/2, radius, -Math.PI/2, -Math.PI/2 + 2 * Math.PI * progress);
   if (progress > 0.5) ctx.strokeStyle = "#0f0";
   else if (progress > 0.25) ctx.strokeStyle = "#ff0";
   else ctx.strokeStyle = "#f00";
-
   ctx.lineWidth = 6;
   ctx.stroke();
 }
 
 function animateTimer(timestamp) {
   if (!startTime) startTime = timestamp;
-  const elapsed = (timestamp - startTime) / 1000;
+  const elapsed = (timestamp - startTime)/1000;
   const remaining = Math.max(totalTime - elapsed, 0);
   timerText.textContent = Math.ceil(remaining);
   const progress = remaining / totalTime;
