@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Champion Select 1v1</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="main-container">
+  <!-- Player 1 Panel -->
+  <div id="player1-panel" class="player-panel">
+    <div id="player1-bans" class="ban-container">
+      <div class="ban-slot"></div>
+      <div class="ban-slot"></div>
+      <div class="ban-slot"></div>
+    </div>
+    <div id="player1-champ-name" class="champ-name">Player1</div>
+    <div id="player1-champ-img" class="champ-img"></div>
+  </div>
+
+  <!-- Center Area -->
+  <div id="center-area">
+    <!-- Score + Timer -->
+    <div id="top-bar">
+      <div id="score">0 - 0</div>
+      <div id="timer-container">
+        <div id="timer-text">30</div>
+        <canvas id="timer-canvas" width="50" height="50"></canvas>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div id="filters-container">
+      <input type="text" id="champ-search" placeholder="Cerca...">
+      <select id="role-filter">
+        <option value="">Tutti</option>
+        <option value="Top">Top</option>
+        <option value="Jungle">Jungle</option>
+        <option value="Mid">Mid</option>
+        <option value="ADC">ADC</option>
+        <option value="Support">Support</option>
+      </select>
+    </div>
+
+    <!-- Champion Grid -->
+    <div id="champion-grid-container">
+      <div id="champion-grid"></div>
+    </div>
+
+    <!-- Buttons -->
+    <button id="lockin-btn">Lock-in</button>
+    <button id="ban-mode-btn">Attiva Ban</button>
+  </div>
+
+  <!-- Player 2 Panel -->
+  <div id="player2-panel" class="player-panel">
+    <div id="player2-bans" class="ban-container">
+      <div class="ban-slot"></div>
+      <div class="ban-slot"></div>
+      <div class="ban-slot"></div>
+    </div>
+    <div id="player2-champ-name" class="champ-name">Player2</div>
+    <div id="player2-champ-img" class="champ-img"></div>
+  </div>
+</div>
+
+<script src="assets/js/championSelect.js"></script>
+</body>
+</html>
